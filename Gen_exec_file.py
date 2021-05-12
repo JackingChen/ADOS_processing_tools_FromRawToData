@@ -18,13 +18,13 @@ def addSecs(tm, secs):
     fulldate = fulldate + datetime.timedelta(seconds=secs, microsecond=microseconds)
     return fulldate.time()
 
-time_info=pd.read_excel("時間切點資料.xlsx",parse_dates=False)
+time_info=pd.read_excel("時間切點資料.xlsx",index=None)
 
 
 
 
 for i in range(len(time_info)):
-    name = time_info['name'][i]
+    name = time_info['Unnamed: 0'][i]
     out_name_audio = name + '.k.wav'
     out_name_doc= "{0}/doctor/{1}_emotion.mkv".format(name,name)
     out_name_kid= "{0}/kid/{1}_emotion.mkv".format(name,name)
