@@ -3,7 +3,7 @@ ffmpeg -i 2016_02_02_01_074_1.avi -ss 0 2016_02_02_01_074_1_sync.avi
 
 #Generate data SCP file
 mkdir -p data
-train_dir=decode_space
+train_dir=decode_space/synced_waves_emotion44
 find $train_dir -name "*.wav" -exec sh -c 'x="{}"; y=$(basename -s .wav $x); printf "%s %s\n"     $y $y' \; | dos2unix > data/utt2spk
 find $train_dir -name "*.wav" -exec sh -c 'x="{}"; y=$(basename -s .wav $x); printf "%s %s\n"     $y $y' \; | dos2unix > data/spk2utt
 find $train_dir -name "*.wav" -exec sh -c 'x="{}"; y=$(basename -s .wav $x); printf "%s %s\n"     $y "sox \"$PWD/$x\" -t wav -r 16k -b 16 -e signed - remix 1 |" ' \; | dos2unix > data/wav.scp
@@ -41,7 +41,8 @@ find . -maxdepth 3 -name "*.WAV" -exec bash -c 'x={};name=$(basename $x); echo "
 
 # format all audios to standard formats
 find . -iname "*.wav" -exec bash -c 'x={}; sox $x -r 16k -e signed ${x}_tmp.wav remix 1; mv ${x}_tmp.wav ${x}' \;
-
+output_root=/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/SyncSpace/synced_waves
+find . -iname "*_emotion.wav" -exec bash -c 'x={};sox $x -r 16k -e signed ${output_root}/${x/.wav/_kid.wav} remix 2' \;
 
 # In path: decode_ADOS_tdnn_fold_transfer/log 
 # get all decoded transcripts into one file
