@@ -48,3 +48,6 @@ find . -iname "*_emotion.wav" -exec bash -c 'x={};sox $x -r 16k -e signed ${outp
 # get all decoded transcripts into one file
 # grep "[\p{Han}]"  ./decode.*.log > finalDecodeResults.log
 grep "^[0-9]*_[0-9]*_[0-9]*_[0-9]*"  ./decode.*.log  > finalDecodeResults.log
+
+# grep K: and D: from BefoteCorrected files
+for file in $(ls *.txt);do egrep -i '(K:|D:)' $file > filtered/$(basename $file); done
