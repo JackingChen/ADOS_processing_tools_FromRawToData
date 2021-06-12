@@ -4,6 +4,10 @@
 Created on Thu Dec 19 11:11:22 2019
 
 @author: jack
+
+
+
+
 """
 
 import json
@@ -19,14 +23,17 @@ def PreprocessCN(line):
     return re.sub(u"[{}]+".format(punc), "", line)
 
 
+def match_target_amplitude(sound, target_dBFS):
+    change_in_dBFS = target_dBFS - sound.dBFS
+    return sound.apply_gain(change_in_dBFS)
 
 
 def get_args():
     # we add compulsary arguments as named arguments for readability
     parser = argparse.ArgumentParser()
-    parser.add_argument('--Audio_path', default='/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/decode_space/synced_waves_emotion44/',
+    parser.add_argument('--Audio_path', default='/media/jack/workspace/560GBVolume/ADOS_data/ADOS_sound_segments/data_TD/synced_waves_emotion22/monowav/',
                         help='minimun unit of VAD ( seconds)')
-    parser.add_argument('--Annotation_path', default='/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/tmp',
+    parser.add_argument('--Annotation_path', default='/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/Project2/Phase2_stedtime',
                         help='what kind of data you want to get')
     parser.add_argument('--audio_padding', default=0.1,
                         help='what kind of data you want to get')
@@ -63,7 +70,9 @@ with open(os.getcwd() + "/../Segments_info_test.txt","w") as fout:
         if EXPORT_AUDIO:
             Audio_d = AudioSegment.from_wav(audio_file_d)
             Audio_k = AudioSegment.from_wav(audio_file_k)
-            assert len(Audio_d) == len(Audio_k)
+            Audio_d = match_target_amplitude(Audio_d, -20.0)
+            Audio_k = match_target_amplitude(Audio_k, -20.0)
+            assert (len(Audio_d) - len(Audio_k)) < 500
         
         content=pd.read_csv(annotation_file,header=None, sep="\t")
         count=0
