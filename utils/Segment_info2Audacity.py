@@ -22,11 +22,11 @@ def get_args():
     parser.add_argument('--LMWT', default='15',
                         help='language model weight')
     parser.add_argument('--soundSegpath', default='/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/Project2/Segments_info_test_phase2.txt',
-                        help='[/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/Project1/Segments_info_test_phase1.txt|]')
+                        help='[/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/Project2/Segments_info_test_phase2.txt|]')
     parser.add_argument('--path_root', default='/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/SegmentInfo2Audacity/',
                         help='defaultpath')
-    parser.add_argument('--trnfile', default=None,
-                        help='/home/jack/Downloads/第一批_20210530_ok.xlsx|none')
+    parser.add_argument('--trnfile', default='/media/jack/workspace/ADOS2hhpanlab/ADOS_TD/Audacity_global_annotation/原檔/第二批_20210606_ok.xlsx',
+                        help='/media/jack/workspace/ADOS2hhpanlab/ADOS_TD/Audacity_global_annotation/原檔/第二批_20210606_ok.xlsx|none')
     args = parser.parse_args()
     return args
 
@@ -69,11 +69,11 @@ df_out_audacity=df_global_time[['utt','role','st','ed','txt']]
 roles=[s.replace("_D","").replace("_K","") for s in df_out_audacity['role'].values]
 roles_set=list(set(roles))
 for role in roles_set:
-    df_out=df_out_audacity[df_out_audacity['role'].str.contains(role)][['utt','role','st','ed','txt']].sort_values("st")
+    search_pattern=role.replace("(","\(").replace(")","\)")
+    df_out=df_out_audacity[df_out_audacity['role'].str.contains(search_pattern)][['utt','role','st','ed','txt']].sort_values("st")
     for idx in df_out.index:
         # role_str= 'K:' if "_K" in df_out.loc[idx,'role'] else 'D:'
         utt_str= df_out.loc[idx,'utt'] + ":"
         df_out.loc[idx,'txt']=utt_str + df_out.loc[idx,'txt']
     outname=outpath + role + suffix
-    df_out[['st','ed','txt']].to_csv(outname,header=None,sep="\t",index=False)
-    
+    df_out[['st','ed','txt']].to_csv(outname,header=None,sep="\t",index=False)    

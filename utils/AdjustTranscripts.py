@@ -13,8 +13,8 @@ import argparse
 def get_args():
     # we add compulsary arguments as named arguments for readability
     parser = argparse.ArgumentParser()
-    parser.add_argument('--indir', default="/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/Project1/transcripts_done")
-    parser.add_argument('--outdir', default="/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/Project1/transcripts_standard")
+    parser.add_argument('--indir', default="/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/Project2/transcripts_done")
+    parser.add_argument('--outdir', default="/media/jack/workspace/560GBVolume/ados_processing_tools_fromrawtodata/Project2/transcripts_standard")
     args = parser.parse_args()
     return args
 
